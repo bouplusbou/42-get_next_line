@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 11:17:35 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/22 14:26:25 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/22 14:52:14 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,26 +54,19 @@ int get_next_line(const int fd, char **line)
 	buf = ft_strnew(BUFF_SIZE);
 	rd = read(fd, buf, BUFF_SIZE);
 	
-	buf_tmp = ft_strnew(BUFF_SIZE);
-
 	// pas de bn
-	if (!ft_strchr(buf, '\n'))
+	buf_tmp = ft_strnew(BUFF_SIZE);
+	while (!ft_strchr(buf, '\n'))
 	{
-//		buf_tmp = ft_strnew(BUFF_SIZE);
-		buf_tmp = ft_strdup(buf);
-		while (!ft_strchr(buf_tmp, '\n'))
-		{
-			rd = read(fd, buf, BUFF_SIZE);	
-			buf_tmp = ft_strjoin(buf_tmp, buf);
-		}
-//		buf = ft_strdup(buf_tmp);
+		rd = read(fd, buf_tmp, BUFF_SIZE);	
+		buf = ft_strjoin(buf, buf_tmp);
 	}
-	printf("buf_tmp: %s\n", buf_tmp);
+	
 	// split le buf 
-	tab = ft_strsplit(buf_tmp, '\n');
+	tab = ft_strsplit(buf, '\n');
 
 	// dernier char de buf == bn
-	(buf[ft_strlen(buf_tmp) - 1] == '\n') ? (leftover = 0) : (leftover = 1);
+	(buf[ft_strlen(buf) - 1] == '\n') ? (leftover = 0) : (leftover = 1);
 	
 	// cree un maillon par line + le leftover
 	content = new_struct(-2, -2, "initialisation");
