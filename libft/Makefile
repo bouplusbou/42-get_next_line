@@ -6,7 +6,7 @@
 #    By: bboucher <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/08 15:17:30 by bboucher          #+#    #+#              #
-#    Updated: 2018/11/20 15:05:06 by bboucher         ###   ########.fr        #
+#    Updated: 2018/11/22 13:50:56 by bboucher         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRC = ft_memset.c \
 	   ft_toupper.c \
 	   ft_tolower.c \
 	   ft_memalloc.c \
+	   ft_realloc.c \
 	   ft_memdel.c \
 	   ft_strnew.c \
 	   ft_strdel.c \
@@ -68,6 +69,7 @@ SRC = ft_memset.c \
 	   ft_lstdelone.c \
 	   ft_lstdel.c \
 	   ft_lstadd.c \
+	   ft_lstadd_back.c \
 	   ft_lstiter.c \
 	   ft_lstmap.c \
 	   ft_isspace.c \

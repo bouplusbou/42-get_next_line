@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/20 11:18:14 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/22 14:26:23 by bboucher         ###   ########.fr       */
+/*   Created: 2018/11/22 11:12:44 by bboucher          #+#    #+#             */
+/*   Updated: 2018/11/22 13:41:14 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE
-# define GET_NEXT_LINE
+#include "libft.h"
 
-# define BUFF_SIZE 1
-# include <sys/types.h>
-# include <sys/uio.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include "libft.h"
-///////////////////////////////////////////////////////////////suppr
-#include <stdio.h>
-
-int get_next_line(const int fd, char **line);
-
-typedef struct	s_struct
+void	ft_lstadd_back(t_list **alst, t_list *new)
 {
-	int		fd;
-	int		leftover;
-	char	*str;
-}				t_struct;
+	t_list	*first;
 
-#endif
+	if (alst && new)
+	{
+		first = *alst;
+		while (first->next)
+			first = first->next;
+		first->next = new;
+	}
+}
