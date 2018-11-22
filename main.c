@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 14:06:25 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/22 14:52:59 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/22 16:51:50 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	main(int c, char **v)
 	int		fd;
 	char	*str;
 
-	fd = open(v[1], O_RDONLY);
+	fd = open(alice, O_RDONLY);
 //	(void)v;
 //	fd = 1;
 //	printf("fd: %i\n", fd);
