@@ -6,11 +6,13 @@
 #    By: bboucher <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/08 15:17:30 by bboucher          #+#    #+#              #
-#    Updated: 2018/11/22 14:53:23 by bboucher         ###   ########.fr        #
+#    Updated: 2018/11/23 11:19:47 by bboucher         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
+
+IDIR = includes/
 
 SRC = ft_memset.c \
 	   ft_bzero.c \
@@ -89,7 +91,7 @@ $(NAME) : $(OBJ)
 	@echo "libft.a creation		OK"
 
 %.o: %.c
-	@$(CC) -I. -o $@ -c $? $(CFLAGS)
+	@$(CC) $(CFLAGS) -I$(IDIR) -o $@ -c $?
 
 clean :
 	@/bin/rm -f $(OBJ)
