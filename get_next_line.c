@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 11:17:35 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/23 11:29:21 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/23 13:45:49 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@ void	read_list(t_list *begin_list)
 {
 	while (begin_list)
 	{
+		printf("loop readlist:\n");
 		ft_putendl(((t_struct*)begin_list->content)->str);
 		ft_putnbr(((t_struct*)begin_list->content)->fd);
 		ft_putchar('\n');
@@ -48,7 +49,6 @@ int		save_del(int fd, char **line, t_list **begin_list)
 			*line = ft_strdup(((t_struct*)(*begin_list)->content)->str);
 			*begin_list = (*begin_list)->next;
 			tmp->next = NULL;
-//			read_list(*begin_list);	
 			return (1);
 		}
 		*begin_list = (*begin_list)->next;
@@ -69,30 +69,34 @@ void	create_lines(char *leftover_str, int fd, t_list **begin_list)
 	
 	buf = ft_strnew(BUFF_SIZE);
 	rd = read(fd, buf, BUFF_SIZE);
+	while (ft_strequ(buf, "\n"))
+		rd = read(fd, buf, BUFF_SIZE);
+	if (rd == 0)
+	{
+		buf = NULL;
+		return ;
+	}
 	buf_tmp = ft_strnew(BUFF_SIZE); // si pas de bn
 	while (!ft_strchr(buf, '\n'))
 	{
 		rd = read(fd, buf_tmp, BUFF_SIZE);	
 		buf = ft_strjoin(buf, buf_tmp);
 	}
-//	printf("leftover_str: %s\n", leftover_str);
 	if (leftover_str)
 		buf = ft_strjoin(leftover_str, buf);
 	tab = ft_strsplit(buf, '\n');
-//	printf("buf : %s\n", buf);
 	(buf[ft_strlen(buf) - 1] == '\n') ? (leftover = 0) : (leftover = 1);
 	i = 0;
 	while (tab[i])
 	{
-		if (!(*begin_list))
-		{
-			content = new_struct(fd, (leftover && !tab[i + 1] ? 1 : 0), tab[i]);
-			(*begin_list) = ft_lstnew(content, sizeof(t_list));
-			i++;
-		}
 		content = new_struct(fd, (leftover && !tab[i + 1] ? 1 : 0), tab[i]);
-		new_list = ft_lstnew(content, sizeof(t_list));
-		ft_lstadd_back(&(*begin_list), new_list);
+		if (!(*begin_list))
+			(*begin_list) = ft_lstnew(content, sizeof(t_list));
+		else
+		{
+			new_list = ft_lstnew(content, sizeof(t_list));
+			ft_lstadd_back(&(*begin_list), new_list);
+		}
 		i++;
 	}
 }
@@ -120,9 +124,6 @@ int 	get_next_line(const int fd, char **line)
 {
 	static t_list	*begin_list;
 	char			*leftover_str;
-	// si !(*begin_list) lance buf, saveline+delmaillon
-	// si (*begin_list) && fd == fd && leftover == 0 saveline+delmaillon
-	// si (*begin_list) && fd == fd && leftover == 1 lance buf, concatene maillon avec l'autre, saveline+delmaillon
 
 	if (!(begin_list))
 	{
@@ -153,17 +154,5 @@ int 	get_next_line(const int fd, char **line)
 			begin_list = begin_list->next;		
 		}
 	}
-
-	// lire le contenu de la liste 
-//	read_list(begin_list);	
-	
-	/*
-	// free le contenu et la structure
-	if (vector != NULL)
-	{
-		free (vector->data);
-		free (vector);
-	}
-	*/	
 	return (0);
 }
