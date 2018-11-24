@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 11:18:14 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/23 13:25:00 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/24 16:40:17 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int get_next_line(const int fd, char **line);
 typedef struct	s_struct
 {
 	int		fd;
-	int		leftover;
 	char	*str;
 }				t_struct;
 

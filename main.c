@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 14:06:25 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/23 13:23:44 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/24 16:31:04 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,12 @@ int	main(int c, char **v)
 	int		fd;
 	int		i = 0;
 	char	*line;
-
+	
 	fd = open(v[1], O_RDONLY);
-//	(void)v;
-//	fd = 1;
-//	printf("fd: %i\n", fd);
 	while (i < ft_atoi(v[2]))
 	{
 		get_next_line(fd, &line);
 		ft_putendl(line);
-//		printf("--------------------------\n");
 		i++;
 	}
 	return (c);
