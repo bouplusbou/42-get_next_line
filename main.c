@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 14:06:25 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/24 16:31:04 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/26 15:46:57 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,11 @@ int	main(int c, char **v)
 	fd = open(v[1], O_RDONLY);
 	while (i < ft_atoi(v[2]))
 	{
+//		ft_putnbr(get_next_line(fd, &line));
 		get_next_line(fd, &line);
-		ft_putendl(line);
+		printf("line: %s\n", line);
+//		printf("one\n");
 		i++;
 	}
 	return (c);
 }
-
-/*
- * creer une liste par fd
- * un maillon = une ligne
- * pour ca, on stock dans str jusqu'a ce que la nwl est trouvee
- * realloc str a chaque passage + si newline, garder en memoire ce qu'il y a dans le buffer apres le newline
- *
- */

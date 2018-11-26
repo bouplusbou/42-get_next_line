@@ -6,23 +6,21 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 11:18:14 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/24 16:40:17 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/26 15:50:24 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE
-# define GET_NEXT_LINE
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-# define BUFF_SIZE 1
+# define BUFF_SIZE 60
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include "includes/libft.h"
-///////////////////////////////////////////////////////////////suppr
-#include <stdio.h>
 
-int get_next_line(const int fd, char **line);
+int				get_next_line(const int fd, char **line);
 
 typedef struct	s_struct
 {

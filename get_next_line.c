@@ -5,30 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/24 10:08:56 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/24 16:40:11 by bboucher         ###   ########.fr       */
+/*   Created: 2018/11/26 10:32:21 by bboucher          #+#    #+#             */
+/*   Updated: 2018/11/26 15:46:51 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-
-void	read_list(t_list *li)
-{
-	while (li)
-	{
-		ft_putendl(((t_struct*)li->content)->str);
-		ft_putnbr(((t_struct*)li->content)->fd);
-		li = li->next;
-	}
-}
-
-
-
-
-
-
-t_struct	*new_struct(int fd, char *str)
+static t_struct	*new_s(int fd, char *str)
 {
 	t_struct	*content;
 
@@ -41,7 +25,7 @@ t_struct	*new_struct(int fd, char *str)
 	return (content);
 }
 
-char		*find_nl(char *str)
+static char		*buf_full_line(char *str)
 {
 	while (*str == '\n')
 		str++;
@@ -54,59 +38,62 @@ char		*find_nl(char *str)
 	return (NULL);
 }
 
-int			find_line(t_list **li, char **line, int fd)
+static void		del_struct(void *content, size_t size)
 {
-	char	*tmp;
-	char	*str;
+	(void)size;
+	ft_strdel(&((t_struct*)content)->str);
+	ft_memdel(&content);
+}
 
-	while (*li)
+static int		get_one_line(t_list **li, char **line, char **big_buf, int fd)
+{
+	t_list	*tmp;
+	char	*full_line;
+	char	*all;
+
+	tmp = *li;
+	while (tmp)
 	{
-		if (((t_struct*)(*li)->content)->fd == fd)
+		if (((t_struct*)tmp->content)->fd == fd)
 		{
-			str = ((t_struct*)(*li)->content)->str;
-			while (*str == '\n')
-				str++;
-			tmp = find_nl(str);
-			if (!tmp)
+			full_line = ((t_struct*)tmp->content)->str;
+			all = buf_full_line(full_line);
+			if (!all)
 			{
-				*line = ft_strdup(str);
+				(*big_buf) = ft_strdup(ft_strtrim(full_line));
+				ft_lstdelone(&(*li), &del_struct);
 				return (0);
 			}
-			tmp[-1] = '\0';
-			*line = ft_strdup(str);
-			((t_struct*)(*li)->content)->str = ft_strdup(tmp);
+			all[-1] = '\0';
+			*line = ft_strdup(ft_strtrim(full_line));
+			((t_struct*)tmp->content)->str = ft_strdup(all);
 			return (1);
 		}
-		*li = (*li)->next;
+		tmp = tmp->next;
 	}
 	return (0);
 }
 
-int			get_next_line(const int fd, char **line)
+int				get_next_line(const int fd, char **line)
 {
 	int				rd;
 	char			*buf;
-	char			*str;
+	char			*big_buf;
 	static t_list	*li;
 
-	if (fd < 0 || !line || !(buf = ft_strnew(BUFF_SIZE)) || !(str = ft_strnew(BUFF_SIZE)))
+	if (!(buf = ft_strnew(BUFF_SIZE))
+			|| !(big_buf = ft_strnew(BUFF_SIZE)))
 		return (-1);
-	if (!find_line(&li, line, fd))
+	if (!get_one_line(&li, line, &big_buf, fd))
 	{
-		rd = 1;
-		while (!find_nl(str) && rd != 0)
+		while (!buf_full_line(big_buf) && rd != 0)
 		{
 			rd = read(fd, buf, BUFF_SIZE);
-			str = ft_strjoin(str, buf);
-			if (rd == -1)
-				return (-1);
+			big_buf = ft_strjoin(big_buf, buf);
 		}
-		!li ? li = ft_lstnew(new_struct(fd, str), sizeof(t_struct)) 
-			: ft_lstadd_back(&li, ft_lstnew(new_struct(fd, str), sizeof(t_struct)));
-		find_line(&li, line, fd);
-	} 
+		!li ? li = ft_lstnew(new_s(fd, big_buf), sizeof(t_struct))
+			: ft_lstadd(&li, ft_lstnew(new_s(fd, big_buf), sizeof(t_struct)));
+		get_one_line(&li, line, &buf, fd);
+	}
 	return (1);
 }
-
-// comment concatener le reste ?
-// pourquoi nl avec buf de 1 et 10 lignes ?
