@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strctrim.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/20 11:18:14 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/26 16:06:23 by bboucher         ###   ########.fr       */
+/*   Created: 2018/11/26 16:08:26 by bboucher          #+#    #+#             */
+/*   Updated: 2018/11/26 16:10:07 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 60
-# include <sys/types.h>
-# include <sys/uio.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include "includes/libft.h"
-
-////////////////////////////////////////////////////////////////////////suppr
-#include <stdio.h>
-
-int				get_next_line(const int fd, char **line);
-
-typedef struct	s_struct
+char		*ft_strctrim(char const *s, char c)
 {
-	int		fd;
-	char	*str;
-}				t_struct;
+	int		start;
+	int		end;
 
-#endif
+	if (!s)
+		return (NULL);
+	start = 0;
+	while (s[start] == c)
+		start++;
+	end = ft_strlen(s);
+	while (end && s[end - 1] == c)
+		end--;
+	if ((end - start) < 0)
+		return (ft_strsub(s, start, 0));
+	return (ft_strsub(s, start, (end - start)));
+}

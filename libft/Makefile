@@ -6,7 +6,7 @@
 #    By: bboucher <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/08 15:17:30 by bboucher          #+#    #+#              #
-#    Updated: 2018/11/23 11:19:47 by bboucher         ###   ########.fr        #
+#    Updated: 2018/11/26 16:11:13 by bboucher         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,6 +56,7 @@ SRC = ft_memset.c \
 	   ft_strsub.c \
 	   ft_strjoin.c \
 	   ft_strtrim.c \
+	   ft_strctrim.c \
 	   ft_strsplit.c \
 	   ft_itoa.c \
 	   ft_putchar.c \

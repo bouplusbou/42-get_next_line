@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 14:06:25 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/26 15:46:57 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/26 16:30:18 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,8 @@ int	main(int c, char **v)
 	fd = open(v[1], O_RDONLY);
 	while (i < ft_atoi(v[2]))
 	{
-//		ft_putnbr(get_next_line(fd, &line));
-		get_next_line(fd, &line);
-		printf("line: %s\n", line);
-//		printf("one\n");
+		if (get_next_line(fd, &line))
+			printf("%s\n", line);
 		i++;
 	}
 	return (c);
