@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 10:32:21 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/26 16:29:47 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/27 09:33:52 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,14 @@ static void		del_struct(void *content, size_t size)
 
 static int		is_line(t_list **li, char **line, char **big_buf, int fd)
 {
-	t_list	*tmp;
 	char	*full_line;
 	char	*all;
 
-	tmp = *li;
-	while (tmp)
+	while (*li)
 	{
-		if (((t_struct*)tmp->content)->fd == fd)
+		if (((t_struct*)(*li)->content)->fd == fd)
 		{
-			full_line = ((t_struct*)tmp->content)->str;
+			full_line = ((t_struct*)(*li)->content)->str;
 			all = after_line(full_line);
 			if (!all)
 			{
@@ -66,13 +64,15 @@ static int		is_line(t_list **li, char **line, char **big_buf, int fd)
 			}
 			all[-1] = '\0';
 			*line = ft_strdup(ft_strctrim(full_line, '\n'));
-			((t_struct*)tmp->content)->str = ft_strdup(all);
+			((t_struct*)(*li)->content)->str = ft_strdup(all);
 			return (1);
 		}
-		tmp = tmp->next;
+		*li = (*li)->next;
 	}
 	return (0);
 }
+//////////////////////////////////////////////////////////////////////////////////////////////suppr
+#include <stdio.h>
 
 int				get_next_line(const int fd, char **line)
 {
@@ -81,21 +81,23 @@ int				get_next_line(const int fd, char **line)
 	char			*big_buf;
 	static t_list	*li;
 
-	if (!(buf = ft_strnew(BUFF_SIZE))
-			|| !(big_buf = ft_strnew(BUFF_SIZE)))
+	if (fd < 0 || !(buf = ft_strnew(BUFF_SIZE))
+		|| !(big_buf = ft_strnew(BUFF_SIZE)))
 		return (-1);
 	if (!is_line(&li, line, &big_buf, fd))
 	{
 		while (!after_line(big_buf) && rd != 0)
 		{
-			rd = read(fd, buf, BUFF_SIZE);
-			if (rd == -1)
+			if ((rd = read(fd, buf, BUFF_SIZE)) && rd == -1)
 				return (-1);
 			big_buf = ft_strjoin(big_buf, buf);
 		}
+//		printf("big_buf: %s\n", big_buf);
 		!li ? li = ft_lstnew(new_s(fd, big_buf), sizeof(t_struct))
 			: ft_lstadd(&li, ft_lstnew(new_s(fd, big_buf), sizeof(t_struct)));
+		free(big_buf);
 		is_line(&li, line, &buf, fd);
+		free(buf);
 		if (rd == 0)
 			return (0);
 	}
