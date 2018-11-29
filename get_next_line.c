@@ -5,101 +5,77 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/26 10:32:21 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/27 09:33:52 by bboucher         ###   ########.fr       */
+/*   Created: 2018/11/29 14:35:20 by bboucher          #+#    #+#             */
+/*   Updated: 2018/11/29 16:00:15 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/////////////////////////////////////////////////////////////suppr
+#include <stdio.h>
+
 #include "get_next_line.h"
 
-static t_struct	*new_s(int fd, char *str)
-{
-	t_struct	*content;
+/*
+   void	read_lst(t_list *li)
+   {
+   while (li)
+   {
+   printf("fd: %zu\n", li->content_size);
+   printf("content: %s\n", li->content);
+   li = li->next;
+   }
+   }
+   */
 
-	if (!(content = ft_memalloc(sizeof(t_struct*))))
-		return (NULL);
-	content->fd = fd;
-	while (*str == '\n')
-		str++;
-	content->str = ft_strdup(str);
-	return (content);
-}
-
-static char		*after_line(char *str)
+t_list	*find_or_create_link(t_list **li, size_t fd)
 {
-	while (*str == '\n')
-		str++;
-	while (*str)
+	if (*li)
 	{
-		if (*str == '\n')
-			return (str + 1);
-		str++;
-	}
-	return (NULL);
-}
-
-static void		del_struct(void *content, size_t size)
-{
-	(void)size;
-	ft_strdel(&((t_struct*)content)->str);
-	ft_memdel(&content);
-}
-
-static int		is_line(t_list **li, char **line, char **big_buf, int fd)
-{
-	char	*full_line;
-	char	*all;
-
-	while (*li)
-	{
-		if (((t_struct*)(*li)->content)->fd == fd)
+		if ((*li)->content_size == fd)
 		{
-			full_line = ((t_struct*)(*li)->content)->str;
-			all = after_line(full_line);
-			if (!all)
-			{
-				(*big_buf) = ft_strdup(ft_strctrim(full_line, '\n'));
-				ft_lstdelone(&(*li), &del_struct);
-				return (0);
-			}
-			all[-1] = '\0';
-			*line = ft_strdup(ft_strctrim(full_line, '\n'));
-			((t_struct*)(*li)->content)->str = ft_strdup(all);
-			return (1);
+			printf("good %zu\n", fd);	
+			return (*li);
 		}
-		*li = (*li)->next;
+		if ((*li)->next == NULL)
+		{
+			(*li)->next = ft_lstnew(NULL, 0);
+			(*li)->next->content_size = fd;
+			return ((*li)->next);
+		}
+		else
+			return (link_find_or_create(&(*li)->next, fd));
+	}
+	*li = ft_lstnew(NULL, 0);
+	(*li)->content_size = fd;
+	return (*li);
+}
+
+int		is_line(char *line)
+{
+	while (*line == '\n')
+		line++;
+	while (*line)
+	{
+		if (*line == '\n')
+			return (1);
+		line++;
 	}
 	return (0);
 }
-//////////////////////////////////////////////////////////////////////////////////////////////suppr
-#include <stdio.h>
 
-int				get_next_line(const int fd, char **line)
+int		get_next_line(int fd, char **line)
 {
+	static t_list	*li;
+	t_list			*link;
 	int				rd;
 	char			*buf;
-	char			*big_buf;
-	static t_list	*li;
 
-	if (fd < 0 || !(buf = ft_strnew(BUFF_SIZE))
-		|| !(big_buf = ft_strnew(BUFF_SIZE)))
+	if (fd < 0 || !line || !(buf = ft_strnew(BUFF_SIZE)))
 		return (-1);
-	if (!is_line(&li, line, &big_buf, fd))
+	link = find_or_create_link(&li, fd);
+	while ((rd = 0) && !is_line(*line) && rd = read(fd, buf, BUFF_SIZE) > 0)
 	{
-		while (!after_line(big_buf) && rd != 0)
-		{
-			if ((rd = read(fd, buf, BUFF_SIZE)) && rd == -1)
-				return (-1);
-			big_buf = ft_strjoin(big_buf, buf);
-		}
-//		printf("big_buf: %s\n", big_buf);
-		!li ? li = ft_lstnew(new_s(fd, big_buf), sizeof(t_struct))
-			: ft_lstadd(&li, ft_lstnew(new_s(fd, big_buf), sizeof(t_struct)));
-		free(big_buf);
-		is_line(&li, line, &buf, fd);
-		free(buf);
-		if (rd == 0)
-			return (0);
+		
 	}
-	return (1);
+	return (0);
 }

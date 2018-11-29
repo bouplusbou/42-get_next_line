@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 11:18:14 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/29 15:28:27 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/28 09:47:25 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,12 @@
 # include "libft/includes/libft.h"
 
 int				get_next_line(const int fd, char **line);
+
+typedef struct	s_fd
+{
+	int			fd;
+	char		*str;
+	struct s_fd	*next;
+}				t_fd;
 
 #endif
