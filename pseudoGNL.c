@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 13:38:00 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/29 16:00:17 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/30 13:07:41 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 CASES:
@@ -35,3 +35,10 @@ If there is a full line populate Line with it, save the rest back in the link an
 If there is no full line save the rest and relaunch READ
 
 Return -1 errors
+
+read
+stock
+getoneline
+leftover?
+
+

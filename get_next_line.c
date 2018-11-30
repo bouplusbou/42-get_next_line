@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 14:35:20 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/30 13:03:20 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/30 13:07:26 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,8 @@ int		get_next_line(int fd, char **line)
 		return (-1);
 //	printf("link->content_size: %zu\n", link->content_size);
 	while (!(rd = 0) && !ft_strchr(*line, '\n')
-			&& !ft_strchr(link->content, '\n') && (rd = read(fd, buf, BUFF_SIZE) > 0))
+			&& !ft_strchr(link->content, '\n') 
+			&& (rd = read(fd, buf, BUFF_SIZE) > 0))
 	{
 //		printf("--into the read loop--\n");
 //		printf("buf: %s\n", buf);
@@ -122,5 +123,5 @@ int		get_next_line(int fd, char **line)
 //	printf("*line: %s\n", *line);
 //	printf("link->content: %s\n", link->content);
 	ft_strdel(&buf);
-	return(get_one_line(&link, line));
+	return (get_one_line(&link, line));
 }
