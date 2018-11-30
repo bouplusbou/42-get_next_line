@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 14:35:20 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/29 16:00:15 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/30 13:03:20 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_list	*find_or_create_link(t_list **li, size_t fd)
 	{
 		if ((*li)->content_size == fd)
 		{
-			printf("good %zu\n", fd);	
+//			printf("good %zu\n", fd);	
 			return (*li);
 		}
 		if ((*li)->next == NULL)
@@ -43,24 +43,58 @@ t_list	*find_or_create_link(t_list **li, size_t fd)
 			return ((*li)->next);
 		}
 		else
-			return (link_find_or_create(&(*li)->next, fd));
+			return (find_or_create_link(&(*li)->next, fd));
 	}
 	*li = ft_lstnew(NULL, 0);
 	(*li)->content_size = fd;
 	return (*li);
 }
 
-int		is_line(char *line)
+/*
+char		*is_line(char *line)
 {
+//	printf("##into is_line function##\n");
 	while (*line == '\n')
 		line++;
 	while (*line)
 	{
 		if (*line == '\n')
-			return (1);
+			return (line + 1);
 		line++;
 	}
-	return (0);
+	return (NULL);
+}
+*/
+
+int		get_one_line(t_list **link, char **line)
+{
+	char	*leftover;
+	char	*one_line;
+
+	if (ft_strchr((*link)->content, '\n'))
+	{
+//		printf("++into the first if get_one_line++\n");
+		one_line = (*link)->content;
+//		printf("one_line: %s\n", one_line);
+		leftover = (ft_strchr(one_line, '\n') + 1);
+//		printf("leftover: %s\n", leftover);
+		leftover[-1] = '\0';
+		*line = ft_strdup(one_line);
+//		printf("*line: %s\n", *line);
+		(*link)->content = ft_strdup(leftover);
+//		printf("(*link)->content: %s\n", (*link)->content);
+		return (1);
+	}
+	else if (ft_strequ((*link)->content, ""))
+	{
+//		printf("++ELSIF get_one_line++\n");
+		ft_strclr(*line);
+		return (0);
+	}
+//	printf("++ELSE get_one_line++\n");
+	*line = ft_strdup((*link)->content);
+	ft_strclr((*link)->content);
+	return (1);
 }
 
 int		get_next_line(int fd, char **line)
@@ -70,12 +104,23 @@ int		get_next_line(int fd, char **line)
 	int				rd;
 	char			*buf;
 
+//	printf("\n\n!!!start the function!!!\n");
 	if (fd < 0 || !line || !(buf = ft_strnew(BUFF_SIZE)))
 		return (-1);
 	link = find_or_create_link(&li, fd);
-	while ((rd = 0) && !is_line(*line) && rd = read(fd, buf, BUFF_SIZE) > 0)
+	if (!link || (!(link->content) && !(link->content = ft_strnew(0))))
+		return (-1);
+//	printf("link->content_size: %zu\n", link->content_size);
+	while (!(rd = 0) && !ft_strchr(*line, '\n')
+			&& !ft_strchr(link->content, '\n') && (rd = read(fd, buf, BUFF_SIZE) > 0))
 	{
-		
+//		printf("--into the read loop--\n");
+//		printf("buf: %s\n", buf);
+		if ((link->content = ft_strjoin(link->content, buf)) && buf[0] == 0)
+			return (0);
 	}
-	return (0);
+//	printf("*line: %s\n", *line);
+//	printf("link->content: %s\n", link->content);
+	ft_strdel(&buf);
+	return(get_one_line(&link, line));
 }

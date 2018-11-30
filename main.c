@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 14:06:25 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/29 16:00:18 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/30 12:47:12 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int	main(int c, char **v)
 	line = ft_strnew(0);
 	while (i < ft_atoi(v[2]))
 	{
-		get_next_line(fd, &line);
-		printf("%s\n", line);
+//		get_next_line(fd, &line);
+		printf("return: %d result line: %s\n", get_next_line(fd, &line), line);
 		i++;
 	}
 	return (c);
