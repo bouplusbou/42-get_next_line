@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 14:35:20 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/30 16:58:12 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/30 18:22:05 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ int		get_next_line(const int fd, char **line)
 	char			*tmp;
 
 //	printf("\n\n!!!start the function!!!\n");
-	if (fd < 0 || !line || !(buf = ft_strnew(BUFF_SIZE)))
+	if (fd < 0 || !line || !(buf = ft_strnew(BUFF_SIZE))
+		|| (rd = read(fd, buf, 0)) < 0)
 		return (-1);
 	link = find_or_create_link(&li, fd);
 	if (!link || (!(link->content) && !(link->content = ft_strnew(0))))
@@ -119,6 +120,7 @@ int		get_next_line(const int fd, char **line)
 //		printf("buf: %s\n", buf);
 		tmp = link->content;
 		link->content = ft_strjoin(link->content, buf);
+		ft_strclr(buf);
 		free(tmp);
 	}
 	if (rd < 0)
