@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 14:35:20 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/30 13:07:26 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/30 16:58:12 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
    li = li->next;
    }
    }
-   */
+*/
 
 t_list	*find_or_create_link(t_list **li, size_t fd)
 {
@@ -97,12 +97,13 @@ int		get_one_line(t_list **link, char **line)
 	return (1);
 }
 
-int		get_next_line(int fd, char **line)
+int		get_next_line(const int fd, char **line)
 {
 	static t_list	*li;
 	t_list			*link;
 	int				rd;
 	char			*buf;
+	char			*tmp;
 
 //	printf("\n\n!!!start the function!!!\n");
 	if (fd < 0 || !line || !(buf = ft_strnew(BUFF_SIZE)))
@@ -111,15 +112,17 @@ int		get_next_line(int fd, char **line)
 	if (!link || (!(link->content) && !(link->content = ft_strnew(0))))
 		return (-1);
 //	printf("link->content_size: %zu\n", link->content_size);
-	while (!(rd = 0) && !ft_strchr(*line, '\n')
-			&& !ft_strchr(link->content, '\n') 
+	while (!ft_strchr(link->content, '\n')
 			&& (rd = read(fd, buf, BUFF_SIZE) > 0))
 	{
 //		printf("--into the read loop--\n");
 //		printf("buf: %s\n", buf);
-		if ((link->content = ft_strjoin(link->content, buf)) && buf[0] == 0)
-			return (0);
+		tmp = link->content;
+		link->content = ft_strjoin(link->content, buf);
+		free(tmp);
 	}
+	if (rd < 0)
+		return (-1);
 //	printf("*line: %s\n", *line);
 //	printf("link->content: %s\n", link->content);
 	ft_strdel(&buf);
