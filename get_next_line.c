@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 14:35:20 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/30 18:22:05 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/11/30 19:07:29 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,21 +50,24 @@ t_list	*find_or_create_link(t_list **li, size_t fd)
 	return (*li);
 }
 
-/*
-char		*is_line(char *line)
+void	delete_link(t_list **li, size_t fd)
 {
-//	printf("##into is_line function##\n");
-	while (*line == '\n')
-		line++;
-	while (*line)
+	t_list	*tmp;
+	t_list	*before;
+
+	tmp = *li;
+	while (tmp->next)
 	{
-		if (*line == '\n')
-			return (line + 1);
-		line++;
+		if ((tmp->next)->content_size == fd)
+		{
+			before = tmp;	
+			before->next = (tmp->next)->next;
+			free(tmp->next);
+			return ;
+		}
+	tmp = tmp->next;
 	}
-	return (NULL);
 }
-*/
 
 int		get_one_line(t_list **link, char **line)
 {
@@ -83,17 +86,21 @@ int		get_one_line(t_list **link, char **line)
 //		printf("*line: %s\n", *line);
 		(*link)->content = ft_strdup(leftover);
 //		printf("(*link)->content: %s\n", (*link)->content);
+		if (ft_strequ((*link)->content, ""))
+			delete_link(li, (*link)->content_size);
 		return (1);
 	}
 	else if (ft_strequ((*link)->content, ""))
 	{
 //		printf("++ELSIF get_one_line++\n");
 		ft_strclr(*line);
+		delete_link(li, (*link)->content_size);
 		return (0);
 	}
 //	printf("++ELSE get_one_line++\n");
 	*line = ft_strdup((*link)->content);
 	ft_strclr((*link)->content);
+	delete_link(li, (*link)->content_size);
 	return (1);
 }
 
