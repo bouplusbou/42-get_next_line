@@ -6,13 +6,13 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 14:06:25 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/30 14:51:34 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/12/03 18:03:32 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
-/*
+
 int	main(int c, char **v)
 {
 	int		fd;
@@ -31,7 +31,7 @@ int	main(int c, char **v)
 	ft_strdel(&line);
 	return (c);
 }
-*/
+/*
 int main(int ac, char **av)
 {
 	char *line;
@@ -44,3 +44,4 @@ int main(int ac, char **av)
 		printf("%s\n", line);
 	return (0);
 }
+*/

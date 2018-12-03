@@ -6,7 +6,7 @@
 /*   By: bboucher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 11:18:14 by bboucher          #+#    #+#             */
-/*   Updated: 2018/11/30 14:11:50 by bboucher         ###   ########.fr       */
+/*   Updated: 2018/12/03 17:28:49 by bboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <sys/uio.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <limits.h>
 # include "libft/includes/libft.h"
 
 int				get_next_line(const int fd, char **line);
